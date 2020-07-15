@@ -13,7 +13,7 @@ export interface IUser extends Document {
 
 const userSchema = new Schema({
   userId: Number,
-  words: [Object]
+  words: [{ title: String, checked: Boolean }]
 });
 
 export const User = model<IUser>('User', userSchema, userCollection);

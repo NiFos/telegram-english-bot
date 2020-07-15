@@ -1344,6 +1344,11 @@ table@^5.2.3:
     slice-ansi "^2.1.0"
     string-width "^3.0.0"
 
+telegraf-inline-menu@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/telegraf-inline-menu/-/telegraf-inline-menu-5.0.0.tgz#e81d2731c9cfc7275752a8e52d6de0d68bc25778"
+  integrity sha512-Ty381mXeeCH1YJ2bmPYK2j48bxmbTsDcdFoHc74HynwpsjODzeIcsl5Z17rgPkWc9vba/3IAmgBKRzrgkGbX8Q==
+
 telegraf@^3.38.0:
   version "3.38.0"
   resolved "https://registry.yarnpkg.com/telegraf/-/telegraf-3.38.0.tgz#745b447547a8e6cdb626055e4d616058aaae0759"
