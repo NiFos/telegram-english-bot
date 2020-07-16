@@ -7,8 +7,6 @@ export async function addWord(ctx: Context, next: () => any) {
   const title = ctx.message.text;
   if (!title) return next();
   if (title[0] !== '/' && title[0] !== ':') {
-    console.log(title);
-    
     await addWordToList(userId, title);
     return ctx.reply(`${title} - added!`);
   } else {
