@@ -1,12 +1,14 @@
 import { User } from "../models/user";
 
-export async function getUserWords(userId: number) {
-  const user = await User.findOne({ userId });
-  if (!user) {
+export async function getUserWords(userId: number, learned: boolean = false) {
+  const words = await User.findOne({ userId }).then((data) => {
+    if (!data || !data.words) return [];
+    return [...data.words].filter(item => item.checked === learned);
+  });
+  if (!words) {
     return [];
   }
-  if (!user.words) return [];
-  return user.words;
+  return words;
 }
 
 export async function getLearnWord(userId: number) {
@@ -20,6 +22,15 @@ export async function getLearnWord(userId: number) {
 
   const word = user.words[Math.floor(Math.random() * user.words.length)];
   return word;
+}
+
+export async function deleteAccount(userId: number) {
+  try {
+    const response = await User.deleteOne({ userId });
+    if (response.deletedCount > 0) return true;
+  } catch (error) {
+    return false;
+  }
 }
 
 export async function addWordToList(userId: number, title: string) {

@@ -1,7 +1,7 @@
 import { Telegraf, Context } from 'telegraf';
 import { checkWord } from '../db/controllers/userController';
 
-export async function check(bot: Telegraf<Context>) {
+export async function checkActions(bot: Telegraf<Context>) {
   bot.action(/^checked-+([A-Za-z]+)/, async (ctx) => {
     const word = ctx.callbackQuery.data.split(/-/);
     const response = await checkWord(ctx.from.id, word[1]);
