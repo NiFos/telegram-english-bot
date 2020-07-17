@@ -13,6 +13,7 @@ export async function getUserWords(userId: number, learned: boolean = false) {
 }
 
 export async function getLearnWord(userId: number) {
+  if (!userId) return false;
   const user = await User.findOne({ userId });
   if (!user) {
     return false;
@@ -26,15 +27,14 @@ export async function getLearnWord(userId: number) {
 }
 
 export async function deleteAccount(userId: number) {
-  try {
-    const response = await User.deleteOne({ userId });
-    if (response.deletedCount > 0) return true;
-  } catch (error) {
-    return false;
-  }
+  if (!userId) return false;
+  const response = await User.deleteOne({ userId });
+  if (!response || response.deletedCount > 0) return true;
+  return false;
 }
 
 export async function addWordToList(userId: number, title: string) {
+  if (!userId || !title) return false;
   let user = await User.findOne({ userId });
   if (!user) {
     user = new User;
@@ -46,11 +46,16 @@ export async function addWordToList(userId: number, title: string) {
   return false;
 }
 export async function checkWord(userId: number, title: string): Promise<boolean> {
+  if (!userId || !title) return false;
+  
   let user = await User.findOne({ userId });
+
   if (!user) return false;
 
   let newWords = [...user.words];
   const id = newWords.findIndex(item => item.title === title);
+  
+  if (id === -1) return false;
   newWords[id].checked = true;
   user.words = newWords;
 
