@@ -1,6 +1,5 @@
 import Telegraf, { Context } from "telegraf";
 import { deleteAccount } from "../db/controllers/userController";
-import { mainMenu } from "../menus/main";
 
 export async function settignsActions(bot: Telegraf<Context>) {
   bot.action('delete-account', async ctx => {
