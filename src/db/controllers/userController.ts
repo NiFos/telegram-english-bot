@@ -1,11 +1,12 @@
 import { User } from "../models/user";
 
 export async function getUserWords(userId: number, learned: boolean = false) {
+  if (!userId) return [];
   const words = await User.findOne({ userId }).then((data) => {
-    if (!data || !data.words) return [];
+    if (!data || !data.words || data.words.length <= 0) return [];
     return [...data.words].filter(item => item.checked === learned);
   });
-  if (!words) {
+  if (!words || words.length <= 0) {
     return [];
   }
   return words;
@@ -40,7 +41,9 @@ export async function addWordToList(userId: number, title: string) {
     user.userId = userId;
   }
   user.words.push({ title, checked: false });
-  await user.save();
+  const response = await user.save();
+  if (response) return true;
+  return false;
 }
 export async function checkWord(userId: number, title: string): Promise<boolean> {
   let user = await User.findOne({ userId });
