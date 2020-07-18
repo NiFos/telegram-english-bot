@@ -5,24 +5,26 @@
   "devDependencies": {
     "@types/chai": "^4.2.11",
     "@types/mocha": "^8.0.0",
+    "@types/mongoose": "^5.7.31",
+    "@types/node": "^14.0.22",
+    "@typescript-eslint/eslint-plugin": "^3.6.1",
+    "@typescript-eslint/parser": "^3.6.1",
     "chai": "^4.2.0",
+    "eslint": "^7.4.0",
+    "eslint-config-airbnb": "^18.2.0",
     "mocha": "^8.0.1",
-    "ts-node-dev": "^1.0.0-pre.51",
+    "ts-node-dev": "^1.0.0-pre.52",
     "typescript": "^3.9.6"
   },
   "dependencies": {
-    "@types/mongoose": "^5.7.31",
-    "@types/node": "^14.0.22",
     "dotenv": "^8.2.0",
-    "eslint": "^7.4.0",
     "mongoose": "^5.9.23",
     "telegraf": "^3.38.0",
-    "telegraf-inline-menu": "^5.0.0",
     "ts-node": "^8.10.2"
   },
   "scripts": {
-    "test": "mocha",
-    "test-ts": "mocha -r ts-node/register test/**/*.ts --timeout 5000",
+    "test": "mocha -r ts-node/register test/**/*.ts --timeout 5000",
+    "start": "ts-node src/index.ts",
     "dev": "ts-node-dev --respawn src/index.ts"
   },
   "repository": {

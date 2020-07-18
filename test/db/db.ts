@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { getUserWords, addWordToList, deleteAccount, checkWord } from '../../src/db/controllers/userController';
 import 'mocha';
 import { expect } from 'chai';
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
 
 const userIdDoesNotExist = 123;
@@ -10,9 +10,12 @@ const userIdWithoutWords = 194244303;
 const userIdWithWords = 194244304;
 const testingWord = 'Testing word';
 
+const databaseUrl = process.env.MONGO_TEST || '';
+const databaseCollection = process.env.MONGO_TEST_COLLECTION_NAME || '';
+
 describe('Database', () => {
   before((done) => {
-    mongoose.connect(process.env.MONGO_TEST);
+    mongoose.connect(databaseUrl);
     const db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error'));
     db.once('open', function () {
@@ -22,7 +25,7 @@ describe('Database', () => {
   });
 
   after(done => {
-    mongoose.connection.dropCollection(process.env.MONGO_TEST_COLLECTION_NAME)
+    mongoose.connection.dropCollection(databaseCollection)
       .then(() => {
         mongoose.connection.close(done);
       });
@@ -35,7 +38,7 @@ describe('Database', () => {
     });
 
     it('Adding without userId and title (should be error)', async () => {
-      const response = await addWordToList(null, null);
+      const response = await addWordToList(0, '');
       expect(response).to.be.false;
     });
   });
@@ -64,12 +67,12 @@ describe('Database', () => {
     });
 
     it('Checking without userId & title', async () => {
-      const response = await checkWord(null, '');
+      const response = await checkWord(0, '');
       expect(response).to.be.false;
     });
 
     it('Checking with wrong title', async () => {
-      const response = await checkWord(null, 'something else');
+      const response = await checkWord(0, 'something else');
       expect(response).to.be.false;
     });
   });
@@ -81,7 +84,7 @@ describe('Database', () => {
     });
 
     it('Deleting without userId', async () => {
-      const response = await deleteAccount(null);
+      const response = await deleteAccount(0);
       expect(response).to.be.false;
     });
 

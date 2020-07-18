@@ -1,6 +1,6 @@
-import { User } from "../models/user";
+import { User, IWord } from "../models/user";
 
-export async function getUserWords(userId: number, learned: boolean = false) {
+export async function getUserWords(userId: number, learned = false): Promise<IWord[]> {
   if (!userId) return [];
   const words = await User.findOne({ userId }).then((data) => {
     if (!data || !data.words || data.words.length <= 0) return [];
@@ -12,7 +12,7 @@ export async function getUserWords(userId: number, learned: boolean = false) {
   return words;
 }
 
-export async function getLearnWord(userId: number) {
+export async function getLearnWord(userId: number): Promise<false | IWord> {
   if (!userId) return false;
   const user = await User.findOne({ userId });
   if (!user) {
@@ -26,14 +26,14 @@ export async function getLearnWord(userId: number) {
   return word;
 }
 
-export async function deleteAccount(userId: number) {
+export async function deleteAccount(userId: number): Promise<boolean> {
   if (!userId) return false;
   const response = await User.deleteOne({ userId });
-  if (!response || response.deletedCount > 0) return true;
+  if (!response || (response.deletedCount || 0) > 0) return true;
   return false;
 }
 
-export async function addWordToList(userId: number, title: string) {
+export async function addWordToList(userId: number, title: string): Promise<boolean> {
   if (!userId || !title) return false;
   let user = await User.findOne({ userId });
   if (!user) {
@@ -48,11 +48,11 @@ export async function addWordToList(userId: number, title: string) {
 export async function checkWord(userId: number, title: string): Promise<boolean> {
   if (!userId || !title) return false;
   
-  let user = await User.findOne({ userId });
+  const user = await User.findOne({ userId });
 
   if (!user) return false;
 
-  let newWords = [...user.words];
+  const newWords = [...user.words];
   const id = newWords.findIndex(item => item.title === title);
   
   if (id === -1) return false;

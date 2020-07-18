@@ -1,9 +1,10 @@
 import { Context } from 'telegraf';
 import { addWordToList } from '../db/controllers/userController';
+import { Message } from 'telegraf/typings/telegram-types';
 
-export async function addWord(ctx: Context, next: () => any) {
-  if (!ctx.message || !ctx.message.from) return next();
-  const userId = ctx.message.from.id;
+export async function addWord(ctx: Context, next: () => void): Promise<void | Message> {
+  if (!ctx.from || !ctx.message) return next();
+  const userId = ctx.from.id;
   const title = ctx.message.text;
   if (!title) return next();
   if (title[0] !== '/' && title[0] !== ':') {

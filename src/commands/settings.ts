@@ -1,13 +1,12 @@
 import Telegraf, { Context, Markup } from "telegraf";
 import { settingsMenu } from "../menus/settings";
-import { deleteAccount } from "../db/controllers/userController";
 import { mainMenu } from "../menus/main";
 
 const deleteKeyboard = Markup.inlineKeyboard([
   Markup.callbackButton(`⛔️ Delete ?`, `delete-account`),
 ]).extra();
 
-export function settings(bot: Telegraf<Context>) {
+export function settings(bot: Telegraf<Context>): void {
   bot.hears('⚙️ Settings', ctx => {
     return ctx.reply('Settings', settingsMenu);
   });
