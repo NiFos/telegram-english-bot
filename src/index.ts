@@ -15,15 +15,13 @@ connectMongo();
 const port = process.env.PORT || 3000;
 
 const app = express();
-app.get('/', (req, res) => {
-  res.send('Hi! Go to http://t.me/YourDictionaryHelperBot to start bot!');
-});
-app.listen(port, () => {
-  console.log(`Listening on ${port}`);
-});
 
 const token = process.env.BOT_TOKEN || '';
+const url = process.env.URL || '';
+
 const bot = new Telegraf(token);
+bot.telegram.setWebhook(`${url}/bot${token}`);
+app.use(bot.webhookCallback(`/bot${token}`));
 
 bot.start(start);
 bot.help(help);
@@ -34,5 +32,10 @@ settignsActions(bot);
 settings(bot);
 bot.use(addWord);
 
-bot.startPolling();
+app.get('/', (req, res) => {
+  res.send('Hi! Go to http://t.me/YourDictionaryHelperBot to start bot!');
+});
+app.listen(port, () => {
+  console.log(`Listening on ${port}`);
+});
 console.log('Bot launched!');
