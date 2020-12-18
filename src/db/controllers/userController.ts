@@ -11,7 +11,7 @@ export async function getUserWords(
       if (!data || !data.words || data.words.length <= 0) return [];
       return [...data.words].filter((item) => item.checked === learned);
     });
-    if (words?.length <= 0) {
+    if (!words || words.length <= 0) {
       throw "No words";
     }
     return words;
@@ -28,7 +28,7 @@ export async function getLearnWord(userId: number): Promise<false | IWord> {
     if (!user) {
       return false;
     }
-    if (user?.words?.length <= 0) return false;
+    if (!user.words || user.words.length <= 0) return false;
 
     user.words = [...user.words].filter((item) => item.checked === false);
     const word = user.words[Math.floor(Math.random() * user.words.length)];
