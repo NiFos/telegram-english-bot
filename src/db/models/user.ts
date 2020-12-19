@@ -1,19 +1,20 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document } from "mongoose";
 
-const userCollection = 'users';
+const userCollection = "users";
 
 export interface IWord {
-  title: string,
-  checked: boolean
+  id?: string;
+  title: string;
+  checked: boolean;
 }
 export interface IUser extends Document {
-  userId: number,
-  words: IWord[]
+  userId: number;
+  words: IWord[];
 }
 
 const userSchema = new Schema({
   userId: Number,
-  words: [{ title: String, checked: Boolean }]
+  words: [{ title: String, checked: Boolean }],
 });
 
-export const User = model<IUser>('User', userSchema, userCollection);
+export const User = model<IUser>("User", userSchema, userCollection);

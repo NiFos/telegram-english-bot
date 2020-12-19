@@ -5,7 +5,7 @@ import { Message } from "telegraf/typings/telegram-types";
 export async function checkActions(
   bot: Telegraf<Context>
 ): Promise<Message | void> {
-  bot.action(/^checked-+([A-Za-z]+)/, async (ctx) => {
+  bot.action(/^checked-+([A-Za-z-0-9]+)/, async (ctx) => {
     try {
       if (!ctx.from || !ctx.callbackQuery) throw "from is undefined";
 
@@ -18,7 +18,7 @@ export async function checkActions(
 
       const response = await checkWord(userId, word[1]);
       if (!response) throw "Cannot check word!";
-      return ctx.editMessageText(`${word[1]} - checked as learned!`);
+      return ctx.editMessageText(`${response} - checked as learned!`);
     } catch (error) {
       return ctx.reply(`Error: ${error.toString()}`);
     }

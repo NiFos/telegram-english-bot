@@ -73,25 +73,26 @@ export async function addWordToList(
 }
 export async function checkWord(
   userId: number,
-  title: string
-): Promise<boolean> {
+  wordId: string
+): Promise<string> {
   try {
-    if (!userId || !title) throw "No userId or title";
+    if (!userId || !wordId) throw "No userId or wordId";
 
     const user = await User.findOne({ userId });
 
     if (!user) throw "Cannot find user";
 
     const newWords = [...user.words];
-    const id = newWords.findIndex((item) => item.title === title);
+    const id = newWords.findIndex((item) => item.id === wordId);
 
     if (id === -1) throw "Cannot find word";
     newWords[id].checked = true;
     user.words = newWords;
 
     await user.save();
-    return true;
+    return newWords[id].title;
   } catch (error) {
-    return false;
+    console.log("error when check word", error.toString());
+    return "";
   }
 }

@@ -18,8 +18,6 @@ export async function list(bot: Telegraf<Context>): Promise<void> {
       const userId = ctx.from.id;
       if (userId === 0) throw "Cannot find user";
       const list: IWord[] = await getUserWords(userId, false);
-      console.log("list", list);
-
       if (list.length <= 0) {
         return ctx.reply(`You don't have any words!`);
       }
