@@ -9,7 +9,7 @@ export async function getUserWords(
 
     const words = await User.findOne({ userId }).then((data) => {
       if (!data || !data.words || data.words.length <= 0) return [];
-      return [...data.words].filter((item) => item.checked === learned);
+      return data.words.filter((item) => item.checked === learned);
     });
     if (!words || words.length <= 0) {
       throw "No words";

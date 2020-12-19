@@ -3,10 +3,12 @@ import { getUserWords } from "../db/controllers/userController";
 import { IWord } from "../db/models/user";
 
 function wordsList(list: IWord[]): string {
-  return `${list.map(
-    (item) =>
-      `${item.title} - ${item.checked ? "✅ learned" : "❌ not learned"}`
-  )}`;
+  return `${list
+    .map(
+      (item) =>
+        `${item.title} - ${item.checked ? "✅ learned" : "❌ not learned"}\n`
+    )
+    .join("")}\nTotal words - ${list.length}`;
 }
 
 export async function list(bot: Telegraf<Context>): Promise<void> {
@@ -16,11 +18,12 @@ export async function list(bot: Telegraf<Context>): Promise<void> {
       const userId = ctx.from.id;
       if (userId === 0) throw "Cannot find user";
       const list: IWord[] = await getUserWords(userId, false);
+      console.log("list", list);
+
       if (list.length <= 0) {
         return ctx.reply(`You don't have any words!`);
       }
       return ctx.reply(`Your words to learing: \n${wordsList(list)}`);
-      /* return ctx.reply(`Your words to learning: \n${list.map(item => `${item.title} - ${item.checked ? '✅ learned' : '❌ not learned'}\n`)}`); */
     } catch (error) {
       return ctx.reply(`Error: ${error.toString()}`);
     }
